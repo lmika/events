@@ -1,14 +1,14 @@
 package events
 
-type Dispatcher struct {
+type Bus struct {
 	topics map[string]*topic
 }
 
-func New() *Dispatcher {
-	return &Dispatcher{topics: make(map[string]*topic)}
+func New() *Bus {
+	return &Bus{topics: make(map[string]*topic)}
 }
 
-func (d *Dispatcher) On(event string, receiver interface{}) error {
+func (d *Bus) On(event string, receiver interface{}) error {
 	// TODO: make thread safe
 	t, hasTopic := d.topics[event]
 	if !hasTopic {
@@ -25,7 +25,7 @@ func (d *Dispatcher) On(event string, receiver interface{}) error {
 	return nil
 }
 
-func (d *Dispatcher) Fire(event string, args ...interface{}) {
+func (d *Bus) Fire(event string, args ...interface{}) {
 	// TODO: make thead safe
 	topic, hasTopic := d.topics[event]
 	if !hasTopic {
